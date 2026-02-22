@@ -1,9 +1,11 @@
 export default async function handler(req, res) {
-  const feedUrl = "https://wwm.bdstoryo.com/feed";
+  try {
+    const response = await fetch("https://wwm.bdstoryo.com/feed");
+    const text = await response.text();
 
-  const response = await fetch(feedUrl);
-  const text = await response.text();
-
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.status(200).send(text);
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.status(200).send(text);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch feed" });
+  }
 }
